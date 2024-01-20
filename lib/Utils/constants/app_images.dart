@@ -9,4 +9,5 @@ class Appimages {
   static const String profileIcon = '$_appImagesBase/ic_profile.svg';
   static const String beerImageBackground = '$_appImagesBase/beerImageBackground.png';
   static const String backIcon = '$_appImagesBase/ic_back.svg';
+  static const String cheersIcon = '$_appImagesBase/ic_cheers.svg';
 }
