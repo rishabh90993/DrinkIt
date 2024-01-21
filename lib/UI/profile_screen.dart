@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:drink_it/Models/user_details.dart';
 import 'package:drink_it/Utils/constants/app_colors.dart';
 import 'package:drink_it/Utils/constants/app_text_styles.dart';
+import 'package:drink_it/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -65,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
               child: CachedNetworkImage(
-                imageUrl: "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg",
+                imageUrl: UserDetails.currentUser?.photoUrl ?? "",
                 height: 267,width: 267,
                 fit: BoxFit.cover,
               )
@@ -93,7 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   borderRadius: BorderRadius.circular(8)
                 ),
                   padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 20),
-                  child: Text("Mark Wood",style: AppTextStyles.bodyText16.copyWith(fontWeight: FontWeight.w700))),
+                  child: Text(UserDetails.currentUser?.name ?? "",style: AppTextStyles.bodyText16.copyWith(fontWeight: FontWeight.w700))),
               const SizedBox(height: 20,),
               Text("Email Id",style: AppTextStyles.bodyText16.copyWith(fontWeight: FontWeight.w700,color: AppColors.grayTextColor),),
               const SizedBox(height: 11,),
@@ -104,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       borderRadius: BorderRadius.circular(8)
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 20),
-                  child: Text("johndoe@yopmail.com",style: AppTextStyles.bodyText16.copyWith(fontWeight: FontWeight.w700))),
+                  child: Text(UserDetails.currentUser?.email ?? "",style: AppTextStyles.bodyText16.copyWith(fontWeight: FontWeight.w700))),
 
             ],
           ),
@@ -121,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 elevation: 0,
               ),
               onPressed: () {
-
+                _logoutUser();
               },
               child: Container(
                 height: 70,
@@ -138,5 +140,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     ),
   );
+
+  Future<void> _logoutUser() async {
+    await Authentication.logoutUser();
+    context.go("/");
+  }
 
 }

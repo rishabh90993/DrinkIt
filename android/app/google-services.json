@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "942159171011",
+    "project_id": "drinkit-f11c5",
+    "storage_bucket": "drinkit-f11c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:942159171011:android:34f98a33be387e6a630176",
+        "android_client_info": {
+          "package_name": "com.nsio.drink_it"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "942159171011-f04f6j96m32mdsh00o6kf0404bignb11.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nsio.drink_it",
+            "certificate_hash": "c65fcf7e995ddb27008f9d8f575b544bc6ddd4f9"
+          }
+        },
+        {
+          "client_id": "942159171011-eu7ersahv0lt8i63696em5o7gkk2vi7d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvyfkScZIEk6ZfzDv_Y9iLLUTen0lUYqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "942159171011-eu7ersahv0lt8i63696em5o7gkk2vi7d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -48,6 +48,17 @@ dependencies:
   # Routing through app
   go_router: ^13.0.1
 
+  # For Google Sign In
+  firebase_core: ^2.24.2
+  google_sign_in: ^6.1.6
+  firebase_auth: ^4.16.0
+
+  # for storing data locally
+  shared_preferences: ^2.1.2
+
+  #For Dependency Injection
+  get_it: ^7.6.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

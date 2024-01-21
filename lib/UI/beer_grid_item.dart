@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:drink_it/Models/beer_data.dart';
 import 'package:drink_it/Utils/constants/app_colors.dart';
 import 'package:drink_it/Utils/constants/app_images.dart';
 import 'package:drink_it/Utils/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class BeerGridItem extends StatelessWidget {
-  const BeerGridItem({Key? key}) : super(key: key);
+  BeerData beerData;
+  BeerGridItem({Key? key, required this.beerData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class BeerGridItem extends StatelessWidget {
               bottom: 5,
               child: Column(
                 children: [
-                  CachedNetworkImage(imageUrl: "https://images.punkapi.com/v2/192.png",height: 105,fit: BoxFit.fitHeight,),
+                  CachedNetworkImage(imageUrl: beerData.imageUrl ?? "",height: 105,fit: BoxFit.fitHeight,),
                   const SizedBox(height: 7,),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 1),
@@ -47,7 +49,7 @@ class BeerGridItem extends StatelessWidget {
                       color: AppColors.blackColor,
                       borderRadius: BorderRadius.all(Radius.circular(4))
                     ),
-                    child: Text("First Brewed : 14/2021",style: AppTextStyles.bodyText12.copyWith(
+                    child: Text("First Brewed : ${beerData.firstBrewed ?? ""}",style: AppTextStyles.bodyText12.copyWith(
                       color: AppColors.whiteColor,
                     ),),
                   )
@@ -62,12 +64,12 @@ class BeerGridItem extends StatelessWidget {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Trashy Blonde",style: AppTextStyles.bodyText14.copyWith(fontWeight: FontWeight.w500),
+        Text(beerData.name ?? "",style: AppTextStyles.bodyText14.copyWith(fontWeight: FontWeight.w500),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
         const SizedBox(height: 7,),
-        Text("Japanese citrus fruit intensifies the sour nature kncasovcvoa ",
+        Text(beerData.description ?? "",
           style: AppTextStyles.bodyText12.copyWith(color: AppColors.grayTextColor),
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
@@ -75,8 +77,9 @@ class BeerGridItem extends StatelessWidget {
         const SizedBox(height: 12,),
         Row(
           children: [
-            _titleTextWidget("ABV","4:5"),
-            _titleTextWidget("IBU","60"),
+            _titleTextWidget("ABV",(beerData.abv ?? 0).toString()),
+            const SizedBox(width: 5,),
+            _titleTextWidget("IBU",(beerData.ibu ?? 0).toString()),
           ],
         )
       ],

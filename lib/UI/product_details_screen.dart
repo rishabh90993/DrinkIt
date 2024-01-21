@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:drink_it/Models/beer_data.dart';
 import 'package:drink_it/Utils/constants/app_colors.dart';
 import 'package:drink_it/Utils/constants/app_images.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,8 @@ import 'package:go_router/go_router.dart';
 import '../Utils/constants/app_text_styles.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  const ProductDetailsScreen({Key? key}) : super(key: key);
+  ProductDetailsScreen({Key? key,required this.beerData}) : super(key: key);
+  BeerData beerData;
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
@@ -62,12 +64,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
             ),
             const SizedBox(height: 30,),
-            Text("Buzz",style: AppTextStyles.bodyText16.copyWith(
+            Text(widget.beerData.name ?? "",style: AppTextStyles.bodyText16.copyWith(
                 color: AppColors.grayTextColor,
                 fontWeight: FontWeight.w700
             ),),
             const SizedBox(height: 12,),
-            Text("A Real Bitter Experience.",style: AppTextStyles.bodyText14.copyWith(color: AppColors.grayTextColor)),
+            Text(widget.beerData.brewersTips ?? "",style: AppTextStyles.bodyText14.copyWith(color: AppColors.grayTextColor)),
             const SizedBox(height: 180,),
           ],
         ),
@@ -82,7 +84,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               color: AppColors.grayBackgroundColor,
               borderRadius: BorderRadius.all(Radius.circular(12))
           ),
-          child: CachedNetworkImage(imageUrl: "https://images.punkapi.com/v2/192.png",height: 200,fit: BoxFit.fitHeight,),
+          child: CachedNetworkImage(imageUrl: widget.beerData.imageUrl ?? "",height: 200,fit: BoxFit.fitHeight,),
         ),
       )
     ],
@@ -95,56 +97,86 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       children: [
         Text("Description",style: AppTextStyles.bodyText16.copyWith(fontWeight: FontWeight.w500),),
         const SizedBox(height: 11,),
-        Text("A light, crisp and bitter IPA brewed with English and American hops. A small batch brewed only once.Pellentesque and mauris nunc, tincidunt in magna vel, vulputate bad gravida nulla."
-            ,style: AppTextStyles.bodyText14.copyWith(color: AppColors.grayTextColor)),
+        Text(widget.beerData.description ?? "",style: AppTextStyles.bodyText14.copyWith(color: AppColors.grayTextColor)),
         const SizedBox(height: 22,),
         Text("First Brewed",style: AppTextStyles.bodyText16.copyWith(fontWeight: FontWeight.w500),),
         const SizedBox(height: 11,),
-        Text("09/2007",style: AppTextStyles.bodyText14.copyWith(color: AppColors.grayTextColor)),
+        Text(widget.beerData.firstBrewed ?? "",style: AppTextStyles.bodyText14.copyWith(color: AppColors.grayTextColor)),
         const SizedBox(height: 22,),
         Text("Getting know your beer better",style: AppTextStyles.bodyText16.copyWith(fontWeight: FontWeight.w500),),
         const SizedBox(height: 22,),
-        GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 5,
-              crossAxisSpacing: 5,
-              childAspectRatio: 3
-          ),
-          padding: EdgeInsets.only(bottom: 29),
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return _titleDescriptionWidget("ABV","4.5");
-          },
-        )
+
+        Row(
+          children: [
+            _titleDescriptionWidget("ABV",(widget.beerData.abv ?? 0).toString()),
+            _titleDescriptionWidget("IBU",(widget.beerData.ibu ?? 0).toString())
+          ],
+        ),
+        const SizedBox(height: 22,),
+        Row(
+          children: [
+            _titleDescriptionWidget("TARGET FG",(widget.beerData.targetFg ?? 0).toString()),
+            _titleDescriptionWidget("TARGET OG",(widget.beerData.targetOg ?? 0).toString())
+          ],
+        ),
+        const SizedBox(height: 22,),
+        Row(
+          children: [
+            _titleDescriptionWidget("EBC",(widget.beerData.ebc ?? 0).toString()),
+            _titleDescriptionWidget("SRM",(widget.beerData.srm ?? 0).toString())
+          ],
+        ),
+        const SizedBox(height: 22,),
+        Row(
+          children: [
+            _titleDescriptionWidget("PH",(widget.beerData.ph ?? 0).toString()),
+            _titleDescriptionWidget("ATTENTION LEVEL",(widget.beerData.attenuationLevel ?? 0).toString())
+          ],
+        ),
+        const SizedBox(height: 40,),
+        // GridView.builder(
+        //   physics: const NeverScrollableScrollPhysics(),
+        //   shrinkWrap: true,
+        //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        //       crossAxisCount: 2,
+        //       mainAxisSpacing: 5,
+        //       crossAxisSpacing: 5,
+        //       childAspectRatio: 3
+        //   ),
+        //   padding: const EdgeInsets.only(bottom: 29),
+        //   itemCount: 10,
+        //   itemBuilder: (context, index) {
+        //     return _titleDescriptionWidget("ABV",(widget.beerData.abv ?? 0).toString());
+        //   },
+        // )
 
       ],
     ),
   );
 
-
-  _titleDescriptionWidget(String title, String value) => Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Container(
-        width: 40,
-        height: 40,
-          decoration: const BoxDecoration(
-            color: AppColors.blackColor,
-            borderRadius: BorderRadius.all(Radius.circular(8))
-          ),
-          child: Center(child: SvgPicture.asset(Appimages.cheersIcon,height: 24,width: 24,))),
-      const SizedBox(width: 11,),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title,style: AppTextStyles.bodyText12.copyWith(fontWeight: FontWeight.w500,letterSpacing: 1),),
-          Text(value, style: AppTextStyles.bodyText12.copyWith(color: AppColors.grayTextColor),),
-        ],
-      ),
-    ],
+  _titleDescriptionWidget(String title, String value) => Expanded(
+    flex: 1,
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 40,
+          height: 40,
+            decoration: const BoxDecoration(
+              color: AppColors.blackColor,
+              borderRadius: BorderRadius.all(Radius.circular(8))
+            ),
+            child: Center(child: SvgPicture.asset(Appimages.cheersIcon,height: 24,width: 24,))),
+        const SizedBox(width: 11,),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title,style: AppTextStyles.bodyText12.copyWith(fontWeight: FontWeight.w500,letterSpacing: 1),),
+            Text(value, style: AppTextStyles.bodyText12.copyWith(color: AppColors.grayTextColor),),
+          ],
+        ),
+      ],
+    ),
   );
 
 }

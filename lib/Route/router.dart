@@ -1,6 +1,7 @@
 
+import 'package:drink_it/Models/beer_data.dart';
 import 'package:drink_it/UI/home_screen.dart';
-import 'package:drink_it/UI/login.dart';
+import 'package:drink_it/UI/login_screen.dart';
 import 'package:drink_it/UI/product_details_screen.dart';
 import 'package:drink_it/UI/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ final appRoutes = <RouteBase>[
       GoRoute(
         path: 'productDetails',
         builder: (BuildContext context, GoRouterState state) {
-          return const ProductDetailsScreen();
+          return ProductDetailsScreen(beerData: state.extra as BeerData,);
         },
       ),
       GoRoute(

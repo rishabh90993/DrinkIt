@@ -1,10 +1,14 @@
-import 'package:drink_it/UI/beer_grid_item.dart';
+import 'package:drink_it/Models/beer_data.dart';
 import 'package:drink_it/Utils/constants/app_colors.dart';
-import 'package:drink_it/Utils/constants/app_images.dart';
 import 'package:drink_it/Utils/constants/app_text_styles.dart';
+import 'package:drink_it/bloc/beer/beers_bloc.dart';
+import 'package:drink_it/bloc/beer/beers_events.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
+import '../Utils/scroll_utils.dart';
+import 'beer_list_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,6 +18,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  List<BeerData> beerList = [];
+  bool canLoadMore = true;
+
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    _scrollController = ScrollController()
+      ..addListener(() {
+        if (shouldPaginateFromController(_scrollController) && canLoadMore) {
+          BlocProvider.of<BeersBloc>(context).add(GetBeersEvent());
+        }
+      });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,29 +62,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontWeight: FontWeight.w700
               ),),
               const SizedBox(height: 10,),
-              Expanded(child: _gridView())
+
+              BlocProvider<BeersBloc>(
+                create: (context) => BeersBloc()..add(GetBeersEvent()),
+                child: BeerListWidget(),
+              )
             ],
         ),
       ),
     );
   }
-
-  _gridView() => GridView.builder(
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2,
-      mainAxisSpacing: 20.0,
-      crossAxisSpacing: 15.0,
-      childAspectRatio: 0.55
-    ),
-    padding: EdgeInsets.only(top: 20,bottom: 20 + MediaQuery.of(context).viewPadding.bottom),
-    itemCount: 10,
-    itemBuilder: (context, index) {
-      return GestureDetector(
-          onTap: (){
-            context.go("/home/productDetails");
-          },
-          child: const BeerGridItem()
-      );
-    },
-  );
 }
