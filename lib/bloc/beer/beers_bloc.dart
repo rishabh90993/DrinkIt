@@ -8,10 +8,10 @@ import 'beers_states.dart';
 
 class BeersBloc extends Bloc<BeersEvents, BeersStates> {
 
-  IBeerService service = BeerService();
+  IBeerService service;
   int page = 1;
 
-  BeersBloc() : super(LoadingState()) {
+  BeersBloc(this.service) : super(LoadingState()) {
     on<GetBeersEvent>(callCurrencyApi);
   }
 

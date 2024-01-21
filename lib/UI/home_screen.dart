@@ -3,6 +3,7 @@ import 'package:drink_it/Utils/constants/app_colors.dart';
 import 'package:drink_it/Utils/constants/app_text_styles.dart';
 import 'package:drink_it/bloc/beer/beers_bloc.dart';
 import 'package:drink_it/bloc/beer/beers_events.dart';
+import 'package:drink_it/service/beer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -64,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 10,),
 
               BlocProvider<BeersBloc>(
-                create: (context) => BeersBloc()..add(GetBeersEvent()),
+                create: (context) => BeersBloc(BeerService())..add(GetBeersEvent()),
                 child: BeerListWidget(),
               )
             ],
